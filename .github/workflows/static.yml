@@ -1,0 +1,326 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire repository
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StoryCubes 🧊✨ | Free Kids Stories</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sky: #6ECFF6;
+      --sun: #FFD166;
+      --mint: #06D6A0;
+      --navy: #2B2D42;
+      --light: #F8F9FA;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--light);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+    header {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: linear-gradient(135deg, var(--sky), #A9DEF9);
+    }
+    h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.8rem;
+      margin-bottom: 0.5rem;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .tagline {
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.9);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .owl {
+      font-size: 2rem;
+      margin-top: 1rem;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .cubes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .cube {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(110, 207, 246, 0.3);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      border: 4px solid var(--sun);
+    }
+    .cube:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 12px 30px rgba(110, 207, 246, 0.5);
+    }
+    .cube::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.8), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .cube:hover::before {
+      opacity: 1;
+    }
+    .cube-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .cube h3 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .cube p {
+      font-size: 1rem;
+      color: #555;
+    }
+    .cube::after {
+      content: "✨ Tap to Read!";
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: var(--mint);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    /* Ad Banner (COPPA-safe) */
+    .ad-banner {
+      text-align: center;
+      padding: 1rem;
+      background: #f0f4ff;
+      margin: 1rem;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: var(--navy);
+      color: white;
+      font-size: 0.9rem;
+    }
+    .zaincash-qr {
+      background: white;
+      display: inline-block;
+      padding: 8px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>✨ StoryCubes ✨</h1>
+    <p class="tagline">Free, safe, magical stories — just tap a cube to begin!</p>
+    <div class="owl">🦉</div>
+  </header>
+
+  <div class="ad-banner">
+    🎁 Support us! (Non-personalized, kid-safe ads)
+    <br>
+    <em>Ad space for LEGO, NatGeo Kids, or educational apps</em>
+  </div>
+
+  <div class="cubes-grid">
+    <div class="cube" onclick="openStory('dragon')">
+      <div class="cube-icon">🐉</div>
+      <h3>The Sneezy Dragon</h3>
+      <p>Ages 4–7 • 5 min read</p>
+    </div>
+    <div class="cube" onclick="openStory('seahorse')">
+      <div class="cube-icon">🐙</div>
+      <h3>Pearl’s Ocean Song</h3>
+      <p>Ages 3–6 • 4 min read</p>
+    </div>
+    <div class="cube" onclick="openStory('moon')">
+      <div class="cube-icon">🚀</div>
+      <h3>Zara’s Moon Jump</h3>
+      <p>Ages 5–8 • 6 min read</p>
+    </div>
+    <div class="cube" onclick="openStory('bear')">
+      <div class="cube-icon">🍯</div>
+      <h3>Bear’s Missing Honey</h3>
+      <p>Ages 3–5 • 3 min read</p>
+    </div>
+    <div class="cube" onclick="openStory('colors')">
+      <div class="cube-icon">🌈</div>
+      <h3>The Runaway Colors</h3>
+      <p>Ages 4–7 • 5 min read</p>
+    </div>
+    <div class="cube" onclick="openStory('comet')">
+      <div class="cube-icon">🪐</div>
+      <h3>Ali & the Talking Comet</h3>
+      <p>Ages 6–8 • 7 min read</p>
+    </div>
+  </div>
+
+  <div class="ad-banner">
+    ❤️ Love StoryCubes? Scan to support!
+    <div class="zaincash-qr">[ZainCash QR Code]</div>
+    <p><em>Donations help us keep stories free & ad-light!</em></p>
+  </div>
+
+  <footer>
+    <p>© 2025 StoryCubes ✨ | Made with love for kids</p>
+    <p>🔒 COPPA-Compliant • No tracking • No data collection</p>
+  </footer>
+
+  <script>
+    function openStory(id) {
+      alert(`✨ Opening "${id}" story... (MVP: Would load full story here!)`);
+      // In real version: window.location = `/stories/${id}.html`
+    }
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قصص الأطفال</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>مرحبا بكم في عالم القصص!</h1>
+        <nav>
+            <a href="index.html">الرئيسية</a>
+            <a href="stories.html">القصص</a>
+            <a href="about.html">عن الموقع</a>
+            <a href="contact.html">اتصل بنا</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="highlighted">
+            <h2>القصة المميزة لهذا الأسبوع</h2>
+            <div class="story-card">
+                <img src="story1.jpg" alt="قصة مغامرة في الغابة">
+                <h3>مغامرة في الغابة</h3>
+                <p<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القصص - قصص الأطفال</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>القصص</h1>
+        <nav>
+            <a href="index.html">الرئيسية</a>
+            <a href="stories.html">القصص</a>
+            <a href="about.html">عن الموقع</a>
+            <a href="contact.html">اتصل بنا</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="stories-list">
+            <div class="story-card">
+                <img src="story1.jpg" alt="قصة مغامرة في الغابة">
+                <h3>مغامرة في الغابة</h3>
+                <p>انضم إلينا في مغامرة شيقة بين الأشجار والحيوانات الغريبة...</p>
+            </div>
+
+            <div class="story-card">
+                <img src="story2.jpg" alt="قصة القلعة المسحورة">
+                <h3>القلعة المسحورة</h3>
+                <p>قصة مثيرة عن شجاعة الأبطال وأسرار القلعة القديمة...</p>
+            </div><!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عن الموقع - قصص الأطفال</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>عن الموقع</h1>
+        <nav>
+            <a href="index.html">الرئيسية</a>
+            <a href="stories.html">القصص</<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اتصل بنا - قصص الأطفال</title>
+    <link rel="stylesheet"
+    <img src="zaincash.png" alt="Donate via ZainCash" width="150">
